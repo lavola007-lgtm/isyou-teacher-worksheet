@@ -195,7 +195,7 @@ footer{max-width:760px;margin:0 auto;padding:0 1rem 2rem;font-size:.82rem;color:
   <span class="chip">2026. 09. 08. · 교사 교육</span>
   <h1>학생 한 명,<br>기억 한 장면</h1>
   <p class="lead">오늘 세 번 씁니다. 한 번은 떠올리고, 한 번은 관찰을 적고, 한 번은 소리 내어 말해 봅니다.</p>
-  <p class="small">쓴 내용은 이 휴대폰에만 남습니다. 끝나고 복사해서 메모장이나 단체방에 붙이면 됩니다.</p>
+  <p class="small">쓴 내용은 이 휴대폰에 저장됩니다. 맨 끝에서 제출하기를 누르면 이즈유로 보내집니다.</p>
   <div class="hr"></div>
   <div class="f">
     <label for="name">이름</label>
@@ -421,13 +421,13 @@ footer{max-width:760px;margin:0 auto;padding:0 1rem 2rem;font-size:.82rem;color:
   </div>
   <div class="send">
     <button id="btnSend" class="primary">제출하기</button>
-    <div class="sendmsg" id="sendMsg">이름과 별점만 채워도 보낼 수 있습니다</div>
+    <div class="sendmsg" id="sendMsg">이름과 별점만 채워도 보낼 수 있습니다. 한 번만 누르면 됩니다</div>
   </div>
   <div class="note">오늘 쓴 세 장면은 선생님 것입니다. 남긴 한 줄은 마이크가 오면 그대로 읽어도 됩니다.</div>
 </section>
 
 <footer>
-  이즈유 교육이사 박현숙 · 2026.09.08 · 이 실습지의 내용은 작성한 휴대폰에만 남습니다.
+  이즈유 교육이사 박현숙 · 2026.09.08 · 학생과 학부모의 실명은 적지 않습니다.
 </footer>
 </main>
 
@@ -565,7 +565,7 @@ footer{max-width:760px;margin:0 auto;padding:0 1rem 2rem;font-size:.82rem;color:
   document.getElementById('btnCopy2').addEventListener('click',function(){ copy(out.value,this); });
 
   // 제출 — 이즈유 집계 시트로 보냅니다
-  var ENDPOINT='';
+  var ENDPOINT='https://script.google.com/macros/s/AKfycbzeaYxy0uVLunrg3CsJS6MyzPF8Ni4WEh11r3RZP08zeTjWxu1I8GgBTkJ84mur-Bpt/exec';
   var SENT='isyou-worksheet-sent-2026-09-08';
   var btnSend=document.getElementById('btnSend'), sendMsg=document.getElementById('sendMsg');
   function joined(prefix){
