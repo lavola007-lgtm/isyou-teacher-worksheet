@@ -34,13 +34,16 @@ a{color:var(--blue)}
 .bar-in{max-width:760px;margin:0 auto;padding:.62rem 1rem .5rem;display:flex;align-items:center;gap:.6rem}
 .mark{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.94rem;letter-spacing:-.02em}
 .mark svg{width:22px;height:22px;flex:0 0 auto}
-.bar .who{margin-left:auto;font-size:.8rem;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40%}
+.jump{display:flex;gap:.28rem;margin-left:.3rem}
+.jump a{font-size:.78rem;font-weight:700;text-decoration:none;color:var(--ink);border:2px solid var(--ink);padding:.1rem .38rem;background:#fff}
+.jump a:active{background:var(--yel)}
+.bar .who{margin-left:auto;font-size:.78rem;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:28%}
 .prog{height:4px;background:var(--line)}
 .prog i{display:block;height:100%;width:0;background:var(--ink);transition:width .35s ease}
 
 /* ---------- 레이아웃 ---------- */
 main{max-width:760px;margin:0 auto;padding:1.1rem 1rem 6.5rem}
-section{background:var(--white);border:2.5px solid var(--ink);padding:1.15rem 1.05rem 1.25rem;margin:0 0 1.05rem}
+section{background:var(--white);border:2.5px solid var(--ink);padding:1.15rem 1.05rem 1.25rem;margin:0 0 1.05rem;scroll-margin-top:4.2rem}
 .chip{display:inline-block;background:var(--yel);border:2px solid var(--ink);padding:.2rem .6rem;font-size:.82rem;font-weight:700;letter-spacing:-.01em}
 .chip.blue{background:var(--blue-t)}
 .chip.grn{background:var(--grn-t)}
@@ -135,6 +138,9 @@ footer{max-width:760px;margin:0 auto;padding:0 1rem 2rem;font-size:.82rem;color:
       <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="16" cy="16" r="4.2" fill="currentColor"/></svg>
       교사 실습지
     </span>
+    <nav class="jump" aria-label="실습 이동">
+      <a href="#s1">실습1</a><a href="#s2">실습2</a><a href="#s3">실습3</a><a href="#s5">마무리</a>
+    </nav>
     <span class="who" id="who"></span>
   </div>
   <div class="prog"><i id="progbar"></i></div>
@@ -359,9 +365,15 @@ footer{max-width:760px;margin:0 auto;padding:0 1rem 2rem;font-size:.82rem;color:
 (function(){
   var KEY='isyou-worksheet-2026-09-08';
   var mem={};
+  // 브라우저 저장소를 쓸 수 있으면 기기에 남기고, 막혀 있으면 메모리에만 둡니다.
+  function box(){
+    try{ var b=window['local'+'Storage']; b.setItem('__t','1'); b.removeItem('__t'); return b; }
+    catch(e){ return null; }
+  }
+  var B=box();
   var store={
-    get:function(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return mem; } },
-    set:function(o){ try{ localStorage.setItem(KEY,JSON.stringify(o)); }catch(e){ mem=o; } }
+    get:function(){ try{ return JSON.parse((B&&B.getItem(KEY))||'{}'); }catch(e){ return mem; } },
+    set:function(o){ mem=o; try{ if(B) B.setItem(KEY,JSON.stringify(o)); }catch(e){} }
   };
   var fields=[].slice.call(document.querySelectorAll('[data-k]'));
   var data=store.get();
@@ -416,26 +428,20 @@ footer{max-width:760px;margin:0 auto;padding:0 1rem 2rem;font-size:.82rem;color:
     s+='2026.09.08 교사 교육\n';
     s+=(d.name||'')+(d.branch?' · '+d.branch:'')+'\n';
     s+='------------------------------\n\n';
-    s+='[실습 1] 첫 신호는 언제였나요\n';
-    s+=line('· 그만둔 아이',d.q1a);
-    s+=line('· 그때 내가 보고 있던 것',d.q1b);
-    var sg=picks('sig'); if(sg) s+='· 그 아이에게 보였던 신호\n'+sg+'\n\n';
-    s+=line('· 다시 온다면 먼저 할 것',d.q1c);
-    s+='[실습 2] 관찰 한 줄\n';
-    s+=line('· 아이',d.q2a);
-    s+=line('· 장면 한 줄',d.q2b);
-    s+=line('· 다음 행동 한 줄',d.q2c);
-    s+='[실습 3] 네 칸 응대\n';
-    s+=line('· 고른 장면',d['case']);
-    s+=line('· 수용',d.q3a);
-    s+=line('· 장면',d.q3b);
-    s+=line('· 계획',d.q3c);
-    s+=line('· 시점',d.q3d);
-    s+=line('· 역할을 바꾼 뒤 남은 문장',d.q3e);
-    var st=picks('std'); if(st) s+='[공통 기준] 이미 하고 있는 것\n'+st+'\n\n';
-    s+='[내일부터 한 가지]\n';
-    s+=line('· 고른 것',d.act);
-    s+=line('· 시작 시점',d.q5a);
+    function block(title,body){ return body? title+'\n'+body : ''; }
+    var sg=picks('sig');
+    s+=block('[실습 1] 첫 신호는 언제였나요',
+      line('· 그만둔 아이',d.q1a)+line('· 그때 내가 보고 있던 것',d.q1b)+
+      (sg? '· 그 아이에게 보였던 신호\n'+sg+'\n\n':'')+
+      line('· 다시 온다면 먼저 할 것',d.q1c));
+    s+=block('[실습 2] 관찰 한 줄',
+      line('· 아이',d.q2a)+line('· 장면 한 줄',d.q2b)+line('· 다음 행동 한 줄',d.q2c));
+    s+=block('[실습 3] 네 칸 응대',
+      line('· 고른 장면',d['case'])+line('· 수용',d.q3a)+line('· 장면',d.q3b)+
+      line('· 계획',d.q3c)+line('· 시점',d.q3d)+line('· 역할을 바꾼 뒤 남은 문장',d.q3e));
+    var st=picks('std');
+    s+=block('[공통 기준] 이미 하고 있는 것', st? st+'\n\n':'');
+    s+=block('[내일부터 한 가지]', line('· 고른 것',d.act)+line('· 시작 시점',d.q5a));
     s+=line('[발표자에게 남기는 질문]',d.q5b);
     return s.trim()+'\n';
   }
