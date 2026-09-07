@@ -147,6 +147,11 @@ dialog::backdrop{background:rgba(26,26,26,.55)}
 .agree{border:2px dashed var(--ink);background:var(--paper);padding:.7rem .8rem;margin:.9rem 0 .2rem}
 .agree label{display:flex;gap:.55rem;align-items:flex-start;font-size:.92rem;line-height:1.5;margin:0}
 .agree input{flex:0 0 auto;width:1.15rem;height:1.15rem;margin-top:.15rem;accent-color:#1A1A1A}
+.send{margin-top:1.1rem}
+.send button{width:100%;font-size:1.05rem;padding:.95rem}
+.send button:disabled{opacity:.55}
+.sendmsg{font-size:.86rem;color:var(--sub);margin-top:.5rem;text-align:center;line-height:1.5}
+.sendmsg.ok{color:#1A1A1A;font-weight:700}
 .dlg{padding:1rem}
 .dlg h3{margin:0 0 .5rem}
 .out{width:100%;min-height:46vh;border:2px solid var(--ink);padding:.7rem;font-size:.92rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;background:#FCFCFA}
@@ -414,6 +419,10 @@ footer{max-width:760px;margin:0 auto;padding:0 1rem 2rem;font-size:.82rem;color:
   <div class="agree">
     <label><input type="checkbox" data-k="agree" value="동의"><span>이 후기를 이즈유 소개 자료에 실어도 좋습니다. 이름은 <b>소속과 학년까지만</b> 적습니다.</span></label>
   </div>
+  <div class="send">
+    <button id="btnSend" class="primary">제출하기</button>
+    <div class="sendmsg" id="sendMsg">이름과 별점만 채워도 보낼 수 있습니다</div>
+  </div>
   <div class="note">오늘 쓴 세 장면은 선생님 것입니다. 남긴 한 줄은 마이크가 오면 그대로 읽어도 됩니다.</div>
 </section>
 
@@ -554,6 +563,53 @@ footer{max-width:760px;margin:0 auto;padding:0 1rem 2rem;font-size:.82rem;color:
     }
   }
   document.getElementById('btnCopy2').addEventListener('click',function(){ copy(out.value,this); });
+
+  // 제출 — 이즈유 집계 시트로 보냅니다
+  var ENDPOINT='';
+  var SENT='isyou-worksheet-sent-2026-09-08';
+  var btnSend=document.getElementById('btnSend'), sendMsg=document.getElementById('sendMsg');
+  function joined(prefix){
+    return fields.filter(function(el){ return el.type==='checkbox' && el.dataset.k.indexOf(prefix)===0 && el.checked; })
+      .map(function(el){ return el.value; }).join(', ');
+  }
+  function alreadySent(){ try{ return !!(B && B.getItem(SENT)); }catch(e){ return false; } }
+  function markSent(){ try{ if(B) B.setItem(SENT,new Date().toISOString()); }catch(e){} }
+  function sentView(){
+    btnSend.disabled=true; btnSend.textContent='보냈습니다';
+    sendMsg.className='sendmsg ok';
+    sendMsg.textContent='고맙습니다. 남기신 한 줄은 오늘 자리에서 그대로 읽힙니다.';
+  }
+  if(alreadySent()) sentView();
+  btnSend.addEventListener('click',function(){
+    if(!data.name){
+      sendMsg.className='sendmsg';
+      sendMsg.textContent='맨 위에 이름만 먼저 적으면 됩니다';
+      var n=document.getElementById('name'); n.scrollIntoView({block:'center'}); n.focus();
+      return;
+    }
+    if(!ENDPOINT){
+      out.value=build();
+      if(dlg.showModal) dlg.showModal(); else alert(out.value);
+      return;
+    }
+    btnSend.disabled=true; btnSend.textContent='보내는 중';
+    sendMsg.className='sendmsg'; sendMsg.textContent='잠시만 기다리면 됩니다';
+    var fd=new FormData();
+    var map={name:'name',branch:'branch',q1a:'q1a',q1b:'q1b',q1c:'q1c',q2a:'q2a',q2b:'q2b',q2c:'q2c',
+      q3a:'q3a',q3b:'q3b',q3c:'q3c',q3d:'q3d',q3e:'q3e',act:'act',q5a:'q5a',star:'star',rev:'rev',rev2:'rev2',agree:'agree'};
+    for(var k in map){ fd.append(map[k], data[k]||''); }
+    fd.append('cs', data['case']||'');
+    fd.append('sig', joined('sig'));
+    fd.append('std', joined('std'));
+    fd.append('good', joined('good'));
+    fetch(ENDPOINT,{method:'POST',mode:'no-cors',body:fd}).then(function(){
+      markSent(); sentView();
+    },function(){
+      btnSend.disabled=false; btnSend.textContent='다시 보내기';
+      sendMsg.className='sendmsg';
+      sendMsg.textContent='연결이 끊겼습니다. 잠시 뒤 다시 누르거나, 아래 복사 버튼으로 남기면 됩니다';
+    });
+  });
 
   document.getElementById('btnShare').addEventListener('click',function(){
     var text=build(), btn=this;
