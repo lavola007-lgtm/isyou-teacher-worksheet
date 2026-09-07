@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>학생 한 명, 기억 한 장면 — 교사 실습지</title>
+<meta name="description" content="교사 교육 현장에서 흐름을 따라가며 직접 쓰는 실습지. 관찰 한 줄, 네 칸 응대, 내일부터 할 한 가지.">
+<meta name="theme-color" content="#1A1A1A">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231A1A1A'/%3E%3Crect x='6' y='6' width='20' height='20' fill='none' stroke='%23FBF7C8' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23FBF7C8'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#1A1A1A; --sub:#5A5A5A; --faint:#8A8A8A; --line:#D4D1CA;
+  --paper:#F7F6F2; --white:#fff; --yel:#FBF7C8; --yel-d:#B97A00;
+  --blue:#1B5FD0; --blue-t:#DCE9FC; --grn:#1E8E68; --grn-t:#E6F6EF;
+  --r:4px;
+  --step: clamp(1.05rem, 4.2vw, 1.25rem);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  font-size:17px; line-height:1.62; letter-spacing:-.01em;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{max-width:100%}
+input,textarea,button,select{font:inherit;color:inherit}
+a{color:var(--blue)}
+
+/* ---------- 상단 바 ---------- */
+.bar{position:sticky;top:0;z-index:20;background:var(--white);border-bottom:2.5px solid var(--ink)}
+.bar-in{max-width:760px;margin:0 auto;padding:.62rem 1rem .5rem;display:flex;align-items:center;gap:.6rem}
+.mark{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.94rem;letter-spacing:-.02em}
+.mark svg{width:22px;height:22px;flex:0 0 auto}
+.bar .who{margin-left:auto;font-size:.8rem;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40%}
+.prog{height:4px;background:var(--line)}
+.prog i{display:block;height:100%;width:0;background:var(--ink);transition:width .35s ease}
+
+/* ---------- 레이아웃 ---------- */
+main{max-width:760px;margin:0 auto;padding:1.1rem 1rem 6.5rem}
+section{background:var(--white);border:2.5px solid var(--ink);padding:1.15rem 1.05rem 1.25rem;margin:0 0 1.05rem}
+.chip{display:inline-block;background:var(--yel);border:2px solid var(--ink);padding:.2rem .6rem;font-size:.82rem;font-weight:700;letter-spacing:-.01em}
+.chip.blue{background:var(--blue-t)}
+.chip.grn{background:var(--grn-t)}
+h1{font-size:clamp(1.7rem,7.4vw,2.35rem);line-height:1.22;margin:.75rem 0 .5rem;letter-spacing:-.035em}
+h2{font-size:clamp(1.32rem,5.6vw,1.6rem);line-height:1.28;margin:.7rem 0 .35rem;letter-spacing:-.03em}
+h3{font-size:1.03rem;margin:1.35rem 0 .5rem;letter-spacing:-.02em}
+p{margin:.35rem 0 .7rem;color:var(--sub)}
+p.lead{color:var(--ink)}
+.hr{height:2px;background:var(--ink);margin:1rem 0}
+.small{font-size:.86rem;color:var(--faint)}
+.note{background:var(--yel);border:2px solid var(--ink);padding:.7rem .8rem;font-weight:600;font-size:.95rem;margin:.9rem 0 0}
+.note.ink{background:var(--ink);color:#fff;border-color:var(--ink)}
+.note.grn{background:var(--grn-t)}
+
+/* ---------- 입력 ---------- */
+.f{margin:.85rem 0 0}
+.f > label{display:block;font-weight:700;font-size:var(--step);margin:0 0 .12rem;letter-spacing:-.02em}
+.f .hint{display:block;font-size:.85rem;color:var(--faint);margin:0 0 .38rem}
+input[type=text],textarea{
+  width:100%;background:#FCFCFA;border:2px solid var(--ink);border-radius:var(--r);
+  padding:.62rem .7rem;font-size:1rem;line-height:1.5;
+}
+textarea{min-height:5.2rem;resize:vertical}
+input[type=text]:focus,textarea:focus{outline:3px solid var(--blue);outline-offset:1px;background:#fff}
+.num{display:flex;gap:.6rem;align-items:flex-start}
+.num b{flex:0 0 auto;width:1.85rem;height:1.85rem;display:grid;place-items:center;background:var(--yel);border:2px solid var(--ink);font-size:.9rem;margin-top:.15rem}
+.num > div{flex:1 1 auto;min-width:0}
+
+/* 체크 목록 */
+.checks{display:grid;gap:.45rem;margin:.55rem 0 0}
+.checks label{display:flex;gap:.6rem;align-items:center;border:2px solid var(--ink);padding:.55rem .65rem;background:#FCFCFA;cursor:pointer;font-size:.98rem}
+.checks input{width:1.15rem;height:1.15rem;accent-color:#1A1A1A;flex:0 0 auto}
+.checks label:has(input:checked){background:var(--yel)}
+
+/* 선택 카드 */
+.pick{display:grid;gap:.5rem;margin:.55rem 0 0}
+.pick label{border:2px solid var(--ink);padding:.6rem .7rem;background:#FCFCFA;cursor:pointer;display:flex;gap:.6rem;align-items:flex-start;font-size:.98rem}
+.pick input{margin-top:.28rem;width:1.1rem;height:1.1rem;accent-color:#1A1A1A;flex:0 0 auto}
+.pick label:has(input:checked){background:var(--blue-t)}
+.pick b{display:block}
+.pick span{display:block;font-size:.86rem;color:var(--sub)}
+
+/* 참고 스크립트 */
+details{border:2px solid var(--ink);background:#FCFCFA;margin:.75rem 0 0}
+details summary{cursor:pointer;padding:.6rem .7rem;font-weight:700;font-size:.95rem;list-style:none;display:flex;justify-content:space-between;gap:.5rem}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"펼치기";font-size:.82rem;color:var(--blue);font-weight:600}
+details[open] summary::after{content:"접기"}
+details .body{padding:0 .7rem .8rem;font-size:.95rem}
+.ng{background:#FDE8E6;border:2px solid var(--ink);padding:.55rem .65rem;margin:.1rem 0 .55rem;font-weight:600}
+.ok{background:var(--yel);border:2px solid var(--ink);padding:.55rem .65rem;font-weight:600}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin:.5rem 0 0}
+.tags i{font-style:normal;font-size:.8rem;font-weight:700;border:2px solid var(--ink);padding:.12rem .45rem;background:#fff}
+
+/* 흐름 표시 */
+.flow{display:flex;flex-wrap:wrap;gap:.3rem;margin:.6rem 0 0}
+.flow i{font-style:normal;font-size:.85rem;font-weight:700;background:var(--ink);color:#fff;padding:.22rem .55rem}
+.flow s{text-decoration:none;color:var(--faint);align-self:center}
+
+/* ---------- 하단 고정 ---------- */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--white);border-top:2.5px solid var(--ink);padding:.55rem 1rem calc(.55rem + env(safe-area-inset-bottom))}
+.dock-in{max-width:760px;margin:0 auto;display:flex;gap:.5rem}
+button{border:2.5px solid var(--ink);background:var(--white);padding:.72rem .5rem;font-weight:700;font-size:.98rem;cursor:pointer;flex:1 1 0;letter-spacing:-.02em}
+button.primary{background:var(--ink);color:#fff}
+button:active{transform:translateY(1px)}
+.saved{font-size:.8rem;color:var(--grn);text-align:center;margin:.3rem 0 0;min-height:1.1em}
+
+dialog{border:2.5px solid var(--ink);padding:0;max-width:min(680px,92vw);width:100%;background:var(--white)}
+dialog::backdrop{background:rgba(26,26,26,.55)}
+.dlg{padding:1rem}
+.dlg h3{margin:0 0 .5rem}
+.out{width:100%;min-height:46vh;border:2px solid var(--ink);padding:.7rem;font-size:.92rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;background:#FCFCFA}
+
+footer{max-width:760px;margin:0 auto;padding:0 1rem 2rem;font-size:.82rem;color:var(--faint)}
+@media (min-width:680px){
+  body{font-size:18px}
+  section{padding:1.5rem 1.6rem 1.7rem}
+  .pick{grid-template-columns:1fr 1fr 1fr}
+}
+@media print{
+  .bar,.dock,.prog{display:none}
+  section{break-inside:avoid;border-width:1.5px}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <span class="mark" aria-label="학생 한 명, 기억 한 장면">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="16" cy="16" r="4.2" fill="currentColor"/></svg>
+      교사 실습지
+    </span>
+    <span class="who" id="who"></span>
+  </div>
+  <div class="prog"><i id="progbar"></i></div>
+</div>
+
+<main>
+
+<!-- 표지 -->
+<section id="s0">
+  <span class="chip">2026. 09. 08. · 교사 교육</span>
+  <h1>학생 한 명,<br>기억 한 장면</h1>
+  <p class="lead">오늘 세 번 씁니다. 실습 1은 떠올리기, 실습 2는 관찰 한 줄, 실습 3은 네 칸 응대입니다.</p>
+  <p class="small">쓴 내용은 이 휴대폰에만 저장됩니다. 마지막에 내려받아 본인 메모장이나 단체방에 붙이면 됩니다.</p>
+  <div class="hr"></div>
+  <div class="f">
+    <label for="name">이름</label>
+    <span class="hint">누구의 실습지인지 알 수 있게</span>
+    <input type="text" id="name" data-k="name" placeholder="예) 박○○">
+  </div>
+  <div class="f">
+    <label for="branch">소속</label>
+    <span class="hint">관 · 담당 학년</span>
+    <input type="text" id="branch" data-k="branch" placeholder="예) 금촌정상 G1230 · 중3">
+  </div>
+</section>
+
+<!-- 실습 1 -->
+<section id="s1">
+  <span class="chip">실습 1 · 옆사람과 3분</span>
+  <h2>그 아이의<br>첫 신호는 언제였나요?</h2>
+  <p>퇴원 통보일이 아닌, 그보다 앞선 어느 수업을 떠올려 봅니다.</p>
+  <div class="f">
+    <label for="q1a">최근 그만둔 아이 한 명</label>
+    <span class="hint">이름은 이니셜로 적어도 됩니다</span>
+    <input type="text" id="q1a" data-k="q1a" placeholder="예) 중2 ○○">
+  </div>
+  <div class="f">
+    <label for="q1b">그때 나는 무엇을 보고 있었습니까</label>
+    <span class="hint">기억나는 장면 한 줄</span>
+    <textarea id="q1b" data-k="q1b" placeholder="예) 앞자리에서 뒤로 옮겨 앉은 날, 질문을 한 번도 하지 않았습니다."></textarea>
+  </div>
+  <h3>퇴원 전 아이가 먼저 보내는 신호</h3>
+  <p class="small">그 아이에게 보였던 것을 고릅니다.</p>
+  <div class="checks" id="signals">
+    <label><input type="checkbox" data-k="sig1" value="질문이 줄었습니다"> 질문이 줄었습니다</label>
+    <label><input type="checkbox" data-k="sig2" value="숙제 제출이 늦어졌습니다"> 숙제 제출이 늦어졌습니다</label>
+    <label><input type="checkbox" data-k="sig3" value="지각이 늘었습니다"> 지각이 늘었습니다</label>
+    <label><input type="checkbox" data-k="sig4" value="자리가 뒤로 갔습니다"> 자리가 뒤로 갔습니다</label>
+    <label><input type="checkbox" data-k="sig5" value="학부모 연락이 뜸해졌습니다"> 학부모 연락이 뜸해졌습니다</label>
+  </div>
+  <div class="f">
+    <label for="q1c">지금 그 아이가 다시 온다면, 나는 무엇을 먼저 하겠습니까</label>
+    <span class="hint">한 가지만</span>
+    <textarea id="q1c" data-k="q1c" placeholder="예) 두 번째 수업 전에 5분 먼저 물어봅니다."></textarea>
+  </div>
+  <div class="note">신호가 오면 이미 늦습니다. 그래서 오늘, 아직 오지 않은 아이를 한 명 고릅니다.</div>
+</section>
+
+<!-- 실습 2 -->
+<section id="s2">
+  <span class="chip">실습 2 · 6분</span>
+  <h2>지금,<br>관찰 한 줄을 써봅니다</h2>
+  <p>짧아도 됩니다. 한 줄이면 충분합니다.</p>
+
+  <div class="f num"><b>1</b><div>
+    <label for="q2a">아이 이름</label>
+    <span class="hint">반에서 가장 먼저 떠오른 한 명</span>
+    <input type="text" id="q2a" data-k="q2a" placeholder="예) 고1 ○○">
+  </div></div>
+  <div class="f num"><b>2</b><div>
+    <label for="q2b">장면 한 줄</label>
+    <span class="hint">이번 주에 내가 직접 본 것 — 칭찬이 아니라 관찰로</span>
+    <textarea id="q2b" data-k="q2b" placeholder="예) 함수 그래프에서 막힌 뒤 손을 들지 않고 다음 문제로 넘어갔습니다."></textarea>
+  </div></div>
+  <div class="f num"><b>3</b><div>
+    <label for="q2c">다음 행동 한 줄</label>
+    <span class="hint">내가 언제 무엇을 할지</span>
+    <textarea id="q2c" data-k="q2c" placeholder="예) 목요일 수업 전 5분, 그 유형만 먼저 확인합니다."></textarea>
+  </div></div>
+
+  <details>
+    <summary>관찰 한 줄 노트 여섯 칸 (오늘부터 쓰는 양식)</summary>
+    <div class="body">
+      <p class="small" style="margin-top:.2rem">출석부 옆 칸이면 충분합니다. 매 수업 한 명씩.</p>
+      <ol style="margin:.2rem 0 0;padding-left:1.2rem">
+        <li>시작점 — 이 아이는 어디에서 멈췄는가</li>
+        <li>현재 장면 — 이번 주에 내가 본 것</li>
+        <li>강점 — 잘 되고 있는 것 하나</li>
+        <li>반복되는 어려움 — 유형으로</li>
+        <li>다음 행동 — 내가 언제 무엇을 할지</li>
+        <li>변화 — 지난달과 무엇이 달라졌는가</li>
+      </ol>
+    </div>
+  </details>
+  <div class="note grn">하루 한 명이면 한 달에 스무 명입니다.</div>
+</section>
+
+<!-- 실습 3 -->
+<section id="s3">
+  <span class="chip blue">실습 3 · 두 사람씩 8분</span>
+  <h2>네 칸으로 답해 봅니다</h2>
+  <p>역할을 정합니다. 학부모 한 명, 교사 한 명. 끝나면 역할을 바꿉니다.</p>
+  <div class="flow"><i>수용</i><s>→</s><i>장면</i><s>→</s><i>계획</i><s>→</s><i>시점</i></div>
+
+  <h3>어떤 장면을 고르셨습니까</h3>
+  <div class="pick" id="pickCase">
+    <label><input type="radio" name="case" data-k="case" value="숙제를 안 해 온 아이"><b>숙제</b><span>숙제를 안 해 온 아이</span></label>
+    <label><input type="radio" name="case" data-k="case" value="시험을 망친 아이"><b>시험</b><span>시험을 망친 아이</span></label>
+    <label><input type="radio" name="case" data-k="case" value="“개별 케어가 안 되는 것 같아요”"><b>개별 케어</b><span>“개별 케어가 안 되는 것 같아요”</span></label>
+  </div>
+
+  <div class="f num"><b>1</b><div>
+    <label for="q3a">수용</label>
+    <span class="hint">방어하지 않고 먼저 받습니다</span>
+    <textarea id="q3a" data-k="q3a" placeholder="예) 어머님, 그렇게 느끼실 수 있습니다."></textarea>
+  </div></div>
+  <div class="f num"><b>2</b><div>
+    <label for="q3b">장면</label>
+    <span class="hint">평가가 아니라 내가 본 것</span>
+    <textarea id="q3b" data-k="q3b" placeholder="예) 제가 이번 주 ○○를 보면서 확인한 건 …"></textarea>
+  </div></div>
+  <div class="f num"><b>3</b><div>
+    <label for="q3c">계획</label>
+    <span class="hint">“해보겠습니다” 대신 무엇을 할지</span>
+    <textarea id="q3c" data-k="q3c" placeholder="예) 다음 두 수업에서 그 유형을 먼저 확인하겠습니다."></textarea>
+  </div></div>
+  <div class="f num"><b>4</b><div>
+    <label for="q3d">시점</label>
+    <span class="hint">언제 다시 말씀드릴지</span>
+    <textarea id="q3d" data-k="q3d" placeholder="예) 이번 주 금요일에 다시 말씀드리겠습니다."></textarea>
+  </div></div>
+
+  <details>
+    <summary>공통 기준 스크립트 세 개 — 막히면 열어봅니다</summary>
+    <div class="body">
+      <p style="margin:.3rem 0 .2rem"><strong>숙제를 안 해 온 아이</strong></p>
+      <div class="ng">“OO가 숙제를 너무 안 해옵니다. 집에서도 신경 써주세요.”</div>
+      <div class="ok">“OO가 이번 주 숙제를 두 번 못 해왔습니다. 그런데 어려운 문제에서 막힌 뒤 도움을 요청하지 못하는 장면이 있었습니다. 다음 주에는 못 푼 문제를 표시해서 가져오게 하고, 제가 수업 전 5분 먼저 확인하겠습니다. 집에서는 ‘숙제 다 했어?’보다 ‘막힌 문제 표시했어?’ 한 마디만 부탁드리겠습니다.”</div>
+      <div class="tags"><i>장면</i><i>계획</i><i>시점</i></div>
+
+      <p style="margin:1rem 0 .2rem"><strong>시험을 망친 아이</strong></p>
+      <div class="ok">“OO는 앞부분 개념 문제는 안정적이었는데, 후반 복합 문항에서 시간 배분이 무너졌습니다. 기초가 부족한 상태라기보다, 풀이를 끝까지 쓰고 검토 시간을 남기는 습관이 필요한 상태입니다. 다음 시험 전까지는 이 두 가지를 집중해서 확인하겠습니다.”</div>
+      <div class="tags"><i>장면</i><i>해석</i><i>계획</i></div>
+
+      <p style="margin:1rem 0 .2rem"><strong>“개별 케어가 안 되는 것 같아요”</strong></p>
+      <div class="ok">“어머님, 그렇게 느끼실 수 있습니다. 제가 이번 주 OO를 보면서 확인한 건, 숙제는 했지만 질문 없이 넘어간 문제가 세 개 있었다는 점입니다. 다음 두 수업에서 그 유형을 먼저 확인하고, 이번 주 금요일에 다시 말씀드리겠습니다.”</div>
+      <div class="tags"><i>수용</i><i>장면</i><i>계획</i><i>시점</i></div>
+    </div>
+  </details>
+
+  <div class="f">
+    <label for="q3e">역할을 바꾼 뒤 — 어떤 문장이 남았습니까</label>
+    <span class="hint">학부모 자리에 앉아보니 걸린 말, 좋았던 말</span>
+    <textarea id="q3e" data-k="q3e" placeholder="예) ‘금요일에 다시 말씀드리겠습니다’ 한마디에서 마음이 놓였습니다."></textarea>
+  </div>
+</section>
+
+<!-- 공통 기준 -->
+<section id="s4">
+  <span class="chip">공통 기준</span>
+  <h2>우리가 함께 지킬 다섯 가지</h2>
+  <p class="small">읽고 넘어가도 됩니다. 오늘 내 교실에서 이미 하고 있는 것에 표시합니다.</p>
+  <div class="checks">
+    <label><input type="checkbox" data-k="std1" value="학생을 평가하지 않고 장면으로 말하기"> 학생을 평가하지 않고 장면으로 말하기</label>
+    <label><input type="checkbox" data-k="std2" value="학부모의 불안을 방어하지 않고 먼저 공감하기"> 학부모의 불안을 방어하지 않고 먼저 공감하기</label>
+    <label><input type="checkbox" data-k="std3" value="“해보겠습니다” 대신 언제 무엇을 할지 말하기"> “해보겠습니다” 대신 언제 무엇을 할지 말하기</label>
+    <label><input type="checkbox" data-k="std4" value="신입생의 첫 2주는 반드시 확인하기"> 신입생의 첫 2주는 반드시 확인하기</label>
+    <label><input type="checkbox" data-k="std5" value="관찰과 약속을 기록하고 구성원이 함께 보기"> 관찰과 약속을 기록하고 구성원이 함께 보기</label>
+  </div>
+  <div class="note ink">기준은 하나입니다. 실행은 관에 맞춥니다.</div>
+</section>
+
+<!-- 마무리 -->
+<section id="s5">
+  <span class="chip grn">마무리 · 30일</span>
+  <h2>내일부터 한 가지</h2>
+  <p>셋 다 하지 않아도 됩니다. 하나면 충분합니다.</p>
+  <div class="pick" style="grid-template-columns:1fr">
+    <label><input type="radio" name="act" data-k="act" value="내 반에서 이름을 부를 다섯 명을 정합니다"><span style="display:block"><b>01 내 반에서 이름을 부를 다섯 명을 정합니다</b><span>오늘 저녁에 정해도 됩니다</span></span></label>
+    <label><input type="radio" name="act" data-k="act" value="관찰 한 줄을 하루에 한 명씩 씁니다"><span style="display:block"><b>02 관찰 한 줄을 하루에 한 명씩 씁니다</b><span>한 달이면 스무 명입니다</span></span></label>
+    <label><input type="radio" name="act" data-k="act" value="신입생에게는 2주차에 먼저 연락합니다"><span style="display:block"><b>03 신입생에게는 2주차에 먼저 연락합니다</b><span>담임이 직접 합니다</span></span></label>
+  </div>
+  <div class="f">
+    <label for="q5a">언제 시작합니까</label>
+    <span class="hint">요일과 시간까지 적으면 지켜집니다</span>
+    <input type="text" id="q5a" data-k="q5a" placeholder="예) 내일 저녁 9시, 출석부 옆에 씁니다">
+  </div>
+  <div class="f">
+    <label for="q5b">발표자에게 남기는 질문</label>
+    <span class="hint">마이크가 오면 그대로 읽어도 됩니다</span>
+    <textarea id="q5b" data-k="q5b" placeholder="예) 학부모가 밤 11시에 연락하면 어디까지 답해야 합니까?"></textarea>
+  </div>
+  <div class="note">오늘 남길 세 문장 — 감정에는 위로로, 판단에는 근거로 답합니다. 칭찬이 아니라 관찰로 말합니다. 아이가 “나는 여기에서 보이고 있다”고 느끼게 합니다.</div>
+</section>
+
+<footer>
+  이즈유 교육이사 박현숙 · 2026.09.08 · 이 실습지의 내용은 작성한 휴대폰에만 남습니다.
+</footer>
+</main>
+
+<div class="dock">
+  <div class="dock-in">
+    <button id="btnCopy">내 실습지 보기 · 복사</button>
+    <button id="btnShare" class="primary">공유하기</button>
+  </div>
+  <div class="saved" id="savedMsg"></div>
+</div>
+
+<dialog id="dlg">
+  <div class="dlg">
+    <h3>내 실습지</h3>
+    <p class="small" style="margin:0 0 .5rem">아래를 복사해 메모장이나 단체방에 붙여 넣습니다.</p>
+    <textarea class="out" id="out" readonly></textarea>
+    <div class="dock-in" style="margin-top:.6rem">
+      <button id="btnClose">닫기</button>
+      <button id="btnCopy2" class="primary">전체 복사</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  var KEY='isyou-worksheet-2026-09-08';
+  var mem={};
+  var store={
+    get:function(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return mem; } },
+    set:function(o){ try{ localStorage.setItem(KEY,JSON.stringify(o)); }catch(e){ mem=o; } }
+  };
+  var fields=[].slice.call(document.querySelectorAll('[data-k]'));
+  var data=store.get();
+
+  // 복원
+  fields.forEach(function(el){
+    var k=el.dataset.k, v=data[k];
+    if(v===undefined) return;
+    if(el.type==='checkbox') el.checked=!!v;
+    else if(el.type==='radio') el.checked=(el.value===v);
+    else el.value=v;
+  });
+
+  var msg=document.getElementById('savedMsg'), t;
+  function save(){
+    var o={};
+    fields.forEach(function(el){
+      var k=el.dataset.k;
+      if(el.type==='checkbox'){ if(el.checked) o[k]=el.value; }
+      else if(el.type==='radio'){ if(el.checked) o[k]=el.value; }
+      else if(el.value.trim()) o[k]=el.value.trim();
+    });
+    data=o; store.set(o);
+    msg.textContent='저장되었습니다';
+    clearTimeout(t); t=setTimeout(function(){ msg.textContent=''; },1400);
+    paint();
+  }
+
+  var who=document.getElementById('who'), bar=document.getElementById('progbar');
+  var required=['name','q1a','q1b','q1c','q2a','q2b','q2c','case','q3a','q3b','q3c','q3d','q3e','act','q5a'];
+  function paint(){
+    var done=required.filter(function(k){ return data[k]; }).length;
+    bar.style.width=Math.round(done/required.length*100)+'%';
+    who.textContent=(data.name?data.name:'')+(data.branch?' · '+data.branch:'');
+  }
+
+  fields.forEach(function(el){
+    el.addEventListener('input',save);
+    el.addEventListener('change',save);
+  });
+  paint();
+
+  // 내보내기 텍스트
+  function line(label,val){ return val? label+'\n'+val+'\n\n' : ''; }
+  function picks(prefix){
+    return fields.filter(function(el){ return el.type==='checkbox' && el.dataset.k.indexOf(prefix)===0 && el.checked; })
+      .map(function(el){ return '· '+el.value; }).join('\n');
+  }
+  function build(){
+    var d=data, s='';
+    s+='학생 한 명, 기억 한 장면 — 교사 실습지\n';
+    s+='2026.09.08 교사 교육\n';
+    s+=(d.name||'')+(d.branch?' · '+d.branch:'')+'\n';
+    s+='------------------------------\n\n';
+    s+='[실습 1] 첫 신호는 언제였나요\n';
+    s+=line('· 그만둔 아이',d.q1a);
+    s+=line('· 그때 내가 보고 있던 것',d.q1b);
+    var sg=picks('sig'); if(sg) s+='· 그 아이에게 보였던 신호\n'+sg+'\n\n';
+    s+=line('· 다시 온다면 먼저 할 것',d.q1c);
+    s+='[실습 2] 관찰 한 줄\n';
+    s+=line('· 아이',d.q2a);
+    s+=line('· 장면 한 줄',d.q2b);
+    s+=line('· 다음 행동 한 줄',d.q2c);
+    s+='[실습 3] 네 칸 응대\n';
+    s+=line('· 고른 장면',d['case']);
+    s+=line('· 수용',d.q3a);
+    s+=line('· 장면',d.q3b);
+    s+=line('· 계획',d.q3c);
+    s+=line('· 시점',d.q3d);
+    s+=line('· 역할을 바꾼 뒤 남은 문장',d.q3e);
+    var st=picks('std'); if(st) s+='[공통 기준] 이미 하고 있는 것\n'+st+'\n\n';
+    s+='[내일부터 한 가지]\n';
+    s+=line('· 고른 것',d.act);
+    s+=line('· 시작 시점',d.q5a);
+    s+=line('[발표자에게 남기는 질문]',d.q5b);
+    return s.trim()+'\n';
+  }
+
+  var dlg=document.getElementById('dlg'), out=document.getElementById('out');
+  document.getElementById('btnCopy').addEventListener('click',function(){
+    out.value=build();
+    if(dlg.showModal) dlg.showModal(); else alert(out.value);
+  });
+  document.getElementById('btnClose').addEventListener('click',function(){ dlg.close(); });
+
+  function copy(text,btn){
+    var old=btn.textContent;
+    function ok(){ btn.textContent='복사되었습니다'; setTimeout(function(){ btn.textContent=old; },1500); }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok,function(){ fallback(); });
+    } else fallback();
+    function fallback(){
+      out.focus(); out.select();
+      try{ document.execCommand('copy'); ok(); }catch(e){ btn.textContent='길게 눌러 복사해 주세요'; setTimeout(function(){ btn.textContent=old; },2200); }
+    }
+  }
+  document.getElementById('btnCopy2').addEventListener('click',function(){ copy(out.value,this); });
+
+  document.getElementById('btnShare').addEventListener('click',function(){
+    var text=build(), btn=this;
+    if(navigator.share){
+      navigator.share({title:'교사 실습지 — 학생 한 명, 기억 한 장면', text:text}).catch(function(){});
+    } else {
+      out.value=text;
+      if(dlg.showModal) dlg.showModal();
+      copy(text,btn);
+    }
+  });
+})();
+</script>
+</body>
+</html>
